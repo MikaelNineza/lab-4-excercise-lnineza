@@ -28,16 +28,10 @@ inline uint64_t expand(uint64_t input, uint32_t scale) {
 
 inline uint64_t morton3d(uint64_t x, uint64_t y, uint64_t z) {
     uint64_t result = 0;
-    uint64_t x2 = x;
-    uint64_t y2 = expand(y, 2) << 2;
+    uint64_t x2 = expand(x, 3);
+    uint64_t y2 = expand(y, 3) << 1;
     uint64_t z2 = expand(z, 3) << 2;
-
-    for (uint64_t i = 0; i < 64; ++i) {
-        result |= (x2 | y2 | z2);
-        x2 >>= 1;
-        y2 >>= 1;
-        z2 >>= 1;
-    }
+    result = x2 | y2 | z2;
 
     return result;
 }
