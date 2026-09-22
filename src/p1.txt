@@ -1,0 +1,7 @@
+26129 18446737621693946098
+58746 18446737621693946098
+
+Row-major is faster than column-major because when doing column-major we are doing big 
+jumps (jumping over 4000 uint64_t which are 8 btyes each) which would affect cache
+performance whereas row-major we are not making any jumps since the array is contiguous.
+
