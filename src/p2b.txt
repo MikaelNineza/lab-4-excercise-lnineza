@@ -1,3 +1,5 @@
-99517
-7908684
+111703
+46145
 
+The morton-order convolution is faster because each kernal window occupies a contiguous space in the array, which is not the case for
+the row-major convolution.

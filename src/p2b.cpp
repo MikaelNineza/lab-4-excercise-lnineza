@@ -71,22 +71,17 @@ int main() {
 
     rowMajTime = timer.click<Timer::Micros>();
     timer.restart();
-    for (size_t i = 0; i < 64; ++i) {
+    for (size_t i = 0; i < CONV_SIZE; ++i) {
+        uint64_t val = 0;
         for (size_t j = 0; j < 64; ++j) {
-            for (size_t k = 0; k < 64; ++k) {
-                uint64_t val = 0;
-
-                for (size_t l = 0; l < 4; ++l) {
-                    for (size_t m = 0; m < 4; ++m) {
-                        for (size_t n = 0; n < 4; ++n) {
-                            val += mortonArr[morton3d(k*4 + n, j*4 + m, i*4 + l)] * kB[morton3d(n, m, l)];
-                        }
-                    }
-                } 
-
-                convB[morton3d(k, j, i)] = val;
-            }
+            // Since both kB and each block in B are laid out the same way,
+            // we can use the same internal coordinate (j) and then move by
+            // i * 64, where i is the block index.
+            // * 64 because each block is 4x4x4
+            val += mortonArr[j + i*64] * kB[j];
         }
+
+        convB[i] = val;
     }
 
     mortonTime = timer.click<Timer::Micros>();
